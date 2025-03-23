@@ -12,6 +12,9 @@ const staticFiles = ['manifest.json', 'popup.html', 'images'];
 staticFiles.forEach(file => {
   if (fs.existsSync(path.join('public', file))) {
     if (fs.lstatSync(path.join('public', file)).isDirectory()) {
+      if (!fs.existsSync(path.join('dist', file))) {
+        fs.mkdirSync(path.join('dist', file), { recursive: true });
+      }
       fs.cpSync(path.join('public', file), path.join('dist', file), { recursive: true });
     } else {
       fs.copyFileSync(path.join('public', file), path.join('dist', file));
@@ -21,11 +24,20 @@ staticFiles.forEach(file => {
 
 // Configuration de build
 const config = {
-  entryPoints: ['src/index.jsx', 'src/background.js', 'src/content.js'],
+  entryPoints: {
+    'popup': 'src/index.jsx',
+    'background': 'src/background.js',
+    'content': 'src/content.js'
+  },
   bundle: true,
   outdir: 'dist',
-  loader: { '.js': 'jsx' },
-  format: 'cjs',
+  loader: { 
+    '.js': 'jsx',
+    '.jsx': 'jsx',
+    '.png': 'file',
+    '.svg': 'file'
+  },
+  format: 'iife',
   platform: 'browser',
   target: ['chrome58'],
   minify: true
