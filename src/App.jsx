@@ -1,16 +1,17 @@
 import React from "react";
 import AddProduct from "./components/AddProduct";
 import ProductList from "./components/ProductList";
-import "./App.css";
+import Subscription from "./components/Subscription";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <h1>Price Tracker</h1>
       <AddProduct />
       <ProductList />
+      <Subscription />
     </div>
   );
-}
+};
 
 export default App;
